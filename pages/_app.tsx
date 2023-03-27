@@ -1,6 +1,7 @@
 import '@/styles/globals.scss';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export default function App({ Component, pageProps }: AppProps) {
@@ -8,7 +9,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <div>
         <Head>
-          <title>Jacky's Blog</title>
+          <title>Jacky&apos;s Blog</title>
           <meta name="description" content="Welcome to my blog" />
           <meta property="og:title" content="Jacky's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
@@ -19,7 +20,7 @@ export default function App({ Component, pageProps }: AppProps) {
         <div className="header">
           <Link href="/" className="logo pointer">
             <div className="logo-image">
-              <img src="/logo.svg"></img>
+              <Image src="/logo.svg" alt='logo' width={44} height={44}></Image>
             </div>
             <div className="logo-name">
               <span className="highlight-name">Jacky</span> Nguyen
