@@ -73,6 +73,10 @@ a {
         font-weight: 700;
         font-size: 22px;
         margin-bottom: 12px;
+
+        &:hover {
+          text-decoration: underline;
+        }
       }
 
       .content-text {
@@ -102,6 +106,17 @@ a {
       border-bottom: 1px solid $white_006;
       width: 70px;
       margin-top: 10px;
+    }
+  }
+
+  .blogs-title {
+    li a {
+      cursor: pointer;
+      color: $blue_002;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 
