@@ -1,0 +1,146 @@
+@import 'var.scss';
+
+html,
+body {
+  padding: 0;
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  font-feature-settings: 'liga', 'tnum', 'case', 'calt', 'zero', 'ss01', 'locl';
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.container {
+  height: 100vh;
+}
+
+.header {
+  background-color: $white_004;
+  height: 72px;
+  padding: 0 64px;
+
+  .logo {
+    display: flex;
+    align-items: center;
+    height: 72px;
+
+    .logo-image {
+      margin-right: 12px;
+    }
+
+    .logo-name {
+      font-size: 24px;
+      color: $black_001;
+      font-weight: bold;
+
+      .highlight-name {
+        color: $blue;
+      }
+    }
+  }
+}
+
+.infinity-blog {
+  background-color: $white_001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: auto;
+  height: calc(100vh - 72px);
+  padding: 48px 0;
+
+  .blog {
+    width: 481px;
+    background-color: $white_001;
+    margin-bottom: 32px;
+
+    .blog-content {
+      padding: 0 24px;
+
+      .content-title {
+        color: $blue_002;
+        font-weight: 700;
+        font-size: 22px;
+        margin-bottom: 12px;
+      }
+
+      .content-text {
+        font-size: 14px;
+        font-weight: 400;
+        margin-bottom: 12px;
+      }
+
+      .content-date {
+        color: $white_005;
+        font-size: 14px;
+        margin-right: 12px;
+      }
+    }
+  }
+}
+
+.blog-container {
+  padding: 0 440px;
+
+  h1 {
+    padding: 32px 0;
+
+    &:after {
+      display: block;
+      content: ' ';
+      border-bottom: 1px solid $white_006;
+      width: 70px;
+      margin-top: 10px;
+    }
+  }
+
+  .tags {
+    margin-top: 32px;
+    font-weight: bold;
+  }
+
+  .tag {
+    cursor: pointer;
+    border: 1px solid $white_006;
+    background-color: $white_007;
+    border-radius: 8px;
+    padding: 8px 8px;
+    margin: 0 6px;
+    color: $blue_002;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #a5a3a3;
+  border-radius: 3px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
