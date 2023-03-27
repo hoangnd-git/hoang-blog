@@ -16,9 +16,9 @@ export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
     <>
       <div>
         <Head>
-          <title>{`${title} | Jacky's Blog`}</title>
+          <title>{`${title} | Hoang's Blog`}</title>
           <meta name="description" content="Welcome to my blog" />
-          <meta property="og:title" content="Jacky's Blog" />
+          <meta property="og:title" content="Hoang's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
           <link rel="icon" href="/favicon.svg" />
         </Head>

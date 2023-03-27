@@ -9,9 +9,9 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <div>
         <Head>
-          <title>Jacky&apos;s Blog</title>
+          <title>Hoang&apos;s Blog</title>
           <meta name="description" content="Welcome to my blog" />
-          <meta property="og:title" content="Jacky's Blog" />
+          <meta property="og:title" content="Hoang's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
           <link rel="icon" href="/favicon.svg" />
         </Head>
@@ -23,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Image src="/logo.svg" alt='logo' width={44} height={44}></Image>
             </div>
             <div className="logo-name">
-              <span className="highlight-name">Jacky</span> Nguyen
+              <span className="highlight-name">Hoang</span> Nguyen
             </div>
           </Link>
         </div>

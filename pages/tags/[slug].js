@@ -7,9 +7,9 @@ export default function TagPage({ posts, slug }) {
     <>
       <div>
         <Head>
-          <title>{`${slug} | Jacky's Blog`}</title>
+          <title>{`${slug} | Hoang's Blog`}</title>
           <meta name="description" content="Welcome to my blog" />
-          <meta property="og:title" content="Jacky's Blog" />
+          <meta property="og:title" content="Hoang's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
           <link rel="icon" href="/favicon.svg" />
         </Head>
