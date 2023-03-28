@@ -3,7 +3,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
-import Script from 'next/script';
+import GoogleAnalytics from '../components/GoogleAnalytics';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -18,20 +18,9 @@ export default function App({ Component, pageProps }: AppProps) {
         </Head>
       </div>
       <div>
-        <Script
-          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_G_ID}`}
-        />
-        <Script
-          id="google-analytics"
-          dangerouslySetInnerHTML={{
-            __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        
-          gtag('config', '${process.env.NEXT_PUBLIC_G_ID}');`,
-          }}
-        />
+        {process.env.NEXT_PUBLIC_G_ID ? (
+          <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_G_ID} />
+        ) : null}
       </div>
       <div className="container">
         <div className="header">
