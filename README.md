@@ -1,1 +1,1 @@
-See my blog: [nguyenhoang.me](https://nguyenhoang.me)
+See my blog: [nguyenhoang.me](https://notes.nguyenhoang.me/)
