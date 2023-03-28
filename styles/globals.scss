@@ -1,5 +1,42 @@
 @import 'var.scss';
 @import 'emoji.min.css';
+@import 'markdown.css';
+
+@font-face {
+  font-feature-settings: 'liga', 'tnum', 'case', 'calt', 'zero', 'ss01', 'locl';
+  font-display: swap;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 400;
+  src: url('font/Inter-Regular.otf') format('opentype');
+}
+
+@font-face {
+  font-feature-settings: 'liga', 'tnum', 'case', 'calt', 'zero', 'ss01', 'locl';
+  font-display: swap;
+  font-family: Inter;
+  font-style: italic;
+  font-weight: 400;
+  src: url('font/Inter-Italic.otf') format('opentype');
+}
+
+@font-face {
+  font-feature-settings: 'liga', 'tnum', 'case', 'calt', 'zero', 'ss01', 'locl';
+  font-display: swap;
+  font-family: Inter;
+  font-style: normal;
+  font-weight: 700;
+  src: url('font/Inter-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-feature-settings: 'liga', 'tnum', 'case', 'calt', 'zero', 'ss01', 'locl';
+  font-display: swap;
+  font-family: Inter;
+  font-style: italic;
+  font-weight: 700;
+  src: url('font/Inter-BoldItalic.otf') format('opentype');
+}
 
 html,
 body {
@@ -10,8 +47,13 @@ body {
 }
 
 a {
-  color: inherit;
+  cursor: pointer;
+  color: $blue_002;
   text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
 }
 
 * {
@@ -43,6 +85,7 @@ a {
     display: flex;
     align-items: center;
     height: 72px;
+    text-decoration: none;
 
     .logo-image {
       margin-right: 12px;
@@ -105,6 +148,7 @@ a {
 
 .blog-container {
   padding: 0 440px;
+  padding-bottom: 56px;
 
   h1 {
     padding: 32px 0;
@@ -155,7 +199,7 @@ a {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: #a5a3a3;
+  background: #c9c8c8;
   border-radius: 3px;
 }
 
@@ -169,11 +213,11 @@ a {
   background: #555;
 }
 
-@media only screen and (max-width: 550px){
-  .infinity-blog{
-      .blog {
-        width: 312px;
-      }
+@media only screen and (max-width: 550px) {
+  .infinity-blog {
+    .blog {
+      width: 312px;
+    }
   }
 
   .blog-container {
@@ -181,7 +225,7 @@ a {
   }
 }
 
-@media only screen and (max-width: 1350px){
+@media only screen and (max-width: 1350px) {
   .blog-container {
     padding: 0 100px;
   }

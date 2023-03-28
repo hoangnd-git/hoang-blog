@@ -44,7 +44,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Image src="/logo.svg" alt="logo" width={44} height={44}></Image>
             </div>
             <div className="logo-name">
-              <span className="highlight-name">Hoang</span> Nguyen
+              <span className="highlight-name">Hoang's</span> Blog
             </div>
           </Link>
         </div>

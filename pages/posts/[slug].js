@@ -8,6 +8,8 @@ import SyntaxHighlighter from 'react-syntax-highlighter';
 import { Button } from '../../components';
 import Link from 'next/link';
 import Head from 'next/head';
+import remarkGfm from 'remark-gfm';
+import stringWidth from 'string-width';
 
 const components = { Button, SyntaxHighlighter };
 
@@ -27,7 +29,29 @@ export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
         <h1>
           <span className="title">{title}</span>
         </h1>
-        <MDXRemote {...mdxSource} components={components} />
+        <div className="markdown-body">
+          <MDXRemote
+            {...mdxSource}
+            components={{
+              ...components,
+              code({ node, inline, className, children, ...props }) {
+                const match = /language-(\w+)/.exec(className || '');
+                return !inline && match ? (
+                  <SyntaxHighlighter
+                    children={String(children).replace(/\n$/, '')}
+                    language={match[1]}
+                    PreTag="div"
+                    {...props}
+                  />
+                ) : (
+                  <code className={className} {...props}>
+                    {children}
+                  </code>
+                );
+              },
+            }}
+          />
+        </div>
         {tags.length > 0 && (
           <div className="tags">
             Tags:
@@ -67,7 +91,15 @@ export async function getStaticProps({ params: { slug } }) {
   );
 
   const { data: frontMatter, content } = matter(markdownWithMeta);
-  const mdxSource = await serialize(content);
+  const mdxSource = await serialize(content, {
+    scope: {},
+    mdxOptions: {
+      remarkPlugins: [[remarkGfm, { stringLength: stringWidth }]],
+      rehypePlugins: [],
+      format: 'mdx',
+    },
+    parseFrontmatter: false,
+  });
 
   return {
     props: {
