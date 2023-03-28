@@ -22,18 +22,16 @@ export default function App({ Component, pageProps }: AppProps) {
           strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_G_ID}`}
         />
-            
         <Script
           id="google-analytics"
           strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
-                    window.dataLayer = window.dataLayer || [];
+          window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
         
-          gtag('config', '${process.env.NEXT_PUBLIC_G_ID}');
-        `,
+          gtag('config', '${process.env.NEXT_PUBLIC_G_ID}');`,
           }}
         />
       </div>
@@ -44,7 +42,7 @@ export default function App({ Component, pageProps }: AppProps) {
               <Image src="/logo.svg" alt="logo" width={44} height={44}></Image>
             </div>
             <div className="logo-name">
-              <span className="highlight-name">Hoang's</span> Blog
+              <span className="highlight-name">{"Hoang's"}</span> Blog
             </div>
           </Link>
         </div>
