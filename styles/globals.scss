@@ -1,4 +1,5 @@
 @import 'var.scss';
+@import 'emoji.min.css';
 
 html,
 body {
@@ -23,6 +24,10 @@ a {
 
 .container {
   height: 100vh;
+}
+
+.ec {
+  font-size: 26px;
 }
 
 .header {
