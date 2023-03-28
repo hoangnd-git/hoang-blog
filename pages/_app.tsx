@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import Head from 'next/head';
 import Image from 'next/image';
 import Link from 'next/link';
+import Script from 'next/script';
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -16,11 +17,31 @@ export default function App({ Component, pageProps }: AppProps) {
           <link rel="icon" href="/favicon.svg" />
         </Head>
       </div>
+      <div className='ga'>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_G_ID}`}
+        />
+            
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+                    window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', '${process.env.NEXT_PUBLIC_G_ID}');
+        `,
+          }}
+        />
+      </div>
       <div className="container">
         <div className="header">
           <Link href="/" className="logo pointer">
             <div className="logo-image">
-              <Image src="/logo.svg" alt='logo' width={44} height={44}></Image>
+              <Image src="/logo.svg" alt="logo" width={44} height={44}></Image>
             </div>
             <div className="logo-name">
               <span className="highlight-name">Hoang</span> Nguyen
