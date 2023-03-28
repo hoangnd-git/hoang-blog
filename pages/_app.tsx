@@ -17,14 +17,12 @@ export default function App({ Component, pageProps }: AppProps) {
           <link rel="icon" href="/favicon.svg" />
         </Head>
       </div>
-      <div className='ga'>
+      <div>
         <Script
-          strategy="afterInteractive"
           src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_G_ID}`}
         />
         <Script
           id="google-analytics"
-          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
           window.dataLayer = window.dataLayer || [];
