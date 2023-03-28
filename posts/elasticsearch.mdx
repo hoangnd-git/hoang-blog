@@ -1,0 +1,52 @@
+---
+title: Elasticsearch cơ bản
+date: '29-03-2023'
+tags: [elasticsearch]
+---
+Elasticsearch là một search engine tuyệt vời, hỗ trợ tìm kiếm nhanh chóng trong lượng dữ liệu lớn và lần gần nhất mình sử dụng Elasticsearch cho dự án của công ty là 3 năm về trước.
+Nguyên nhân là do Elasticsearch phù hợp cho hệ thống lớn có lượng dữ liệu lớn cần xử lý, còn với các hệ thống nhỏ mà mình làm gần đây thì chỉ cần sử dụng
+các database thông thường như MySQL, MongoDB,... cũng có thể xử lý được, cách triển khai và vận hành các databse này cũng
+dễ dàng hơn Elasticsearch.
+
+Do đã lâu không sử dụng, nên hôm nay mình sẽ tìm hiểu và note lại những điểm cần lưu ý về Elasticsearch.
+Như các database khác thì những điểm cần biết về Elasticsearch như sau:
+ - [Elasticsearch lưu trữ dữ liệu như nào?](#menu-1)
+ - [Cách thao tác với dữ liệu trong Elasticsearch](#menu-2)
+
+<div id="menu-1"></div>
+## Elasticsearch lưu trữ dữ liệu như nào
+
+> Elasticsearch is a distributed document store. Instead of storing information as rows of columnar data, Elasticsearch stores complex data structures that have been serialized as JSON documents
+
+Elasticsearch lưu trữ dữ liệu trong các **index** tương ứng với collection ở MongoDB và table ở SQL.
+Trong index sẽ có các document dưới dạng JSON format, khá giống với MongoDB.
+Sau khi lưu trữ data, Elasticsearch sẽ tiến hành đánh index cho data để hỗ trợ fulltext search nhanh chóng, quá trình này được mô tả là ```near real-time--within 1 second```. Elasticsearch sử dụng cấu trúc dữ liệu kiểu ```inverted index``` giúp tìm kiếm nhanh hơn. 
+Ví dụ khi thêm 2 document này vào Elasticsearch:
+
+|id|document		
+|--|--
+|doc1|Elasticsearch is awesome
+|doc2|Your orders is created
+
+Elasticsearch sẽ lưu trữ inverted index như sau:
+
+|term|frequency|documents|								
+|--|--|--|
+|Elasticsearch|1| doc1
+|is|2| doc1, doc2
+|awesome|1| doc1
+|Your|1| doc2
+|orders|1| doc2
+|created|1| doc2
+
+<div id="menu-2"></div>
+## Cách thao tác với dữ liệu trong Elasticsearch
+
+Elasticsearch cung cấp các API cho phép thao tác với dữ liệu. Một số API như sau:
+
+ 1. Tạo mới index: ```PUT  /my-index-000001```
+ 2. Tìm kiếm trong index: ```GET /my-index-000001/_search?q=key```
+
+Có khá nhiều API nên mình sẽ tổng hợp lại ở một bài khác.
+
+Trên đây là một số khái niệm cơ bản của Elasticsearch, các bài sau mình sẽ phân tích chi tiết từng phần của Elasticsearch hơn.
