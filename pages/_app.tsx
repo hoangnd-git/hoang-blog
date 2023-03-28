@@ -15,25 +15,27 @@ export default function App({ Component, pageProps }: AppProps) {
           <meta property="og:title" content="Hoang's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
           <link rel="icon" href="/favicon.svg" />
-          <Script
-            strategy="afterInteractive"
-            src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_G_ID}`}
-          />
-              
-          <Script
-            id="google-analytics"
-            strategy="afterInteractive"
-            dangerouslySetInnerHTML={{
-              __html: `
+        </Head>
+      </div>
+      <div className='ga'>
+        <Script
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_G_ID}`}
+        />
+            
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
                     window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
         
           gtag('config', '${process.env.NEXT_PUBLIC_G_ID}');
         `,
-            }}
-          />
-        </Head>
+          }}
+        />
       </div>
       <div className="container">
         <div className="header">
