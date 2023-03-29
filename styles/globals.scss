@@ -79,16 +79,22 @@ a {
 .header {
   background-color: $white_004;
   height: 72px;
-  padding: 0 64px;
+}
+
+.logo-container {
+  margin-top: 32px;
 
   .logo {
     display: flex;
     align-items: center;
-    height: 72px;
+    justify-content: center;
+    flex-direction: column;
     text-decoration: none;
 
     .logo-image {
-      margin-right: 12px;
+      img {
+        border-radius: 90px;
+      }
     }
 
     .logo-name {
