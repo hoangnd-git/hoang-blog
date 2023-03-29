@@ -24,7 +24,7 @@ export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
           <meta name="description" content={title} />
           <meta property="og:title" content={title} />
           <meta property="og:description" content={title} />
-          <link rel="icon" href="/favicon.svg" />
+          <link rel="icon" href="/favicon.png" />
         </Head>
       </div>
       <div className="blog-container">

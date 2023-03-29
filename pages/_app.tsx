@@ -14,7 +14,7 @@ export default function App({ Component, pageProps }: AppProps) {
           <meta name="description" content="Welcome to my blog" />
           <meta property="og:title" content="Hoang's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
-          <link rel="icon" href="/favicon.svg" />
+          <link rel="icon" href="/favicon.png" />
         </Head>
       </div>
       <div>
@@ -23,10 +23,10 @@ export default function App({ Component, pageProps }: AppProps) {
         ) : null}
       </div>
       <div className="container">
-        <div className="header">
+        <div className="logo-container">
           <Link href="/" className="logo pointer">
             <div className="logo-image">
-              <Image src="/logo.svg" alt="logo" width={44} height={44}></Image>
+              <Image src="/logo.png" alt="logo" width={150} height={150}></Image>
             </div>
             <div className="logo-name">
               <span className="highlight-name">{"Hoang's"}</span> Blog

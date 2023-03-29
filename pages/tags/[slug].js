@@ -11,7 +11,7 @@ export default function TagPage({ posts, slug }) {
           <meta name="description" content="Welcome to my blog" />
           <meta property="og:title" content="Hoang's Blog" />
           <meta property="og:description" content="Welcome to my blog" />
-          <link rel="icon" href="/favicon.svg" />
+          <link rel="icon" href="/favicon.png" />
         </Head>
       </div>
       <div className="blog-container">
