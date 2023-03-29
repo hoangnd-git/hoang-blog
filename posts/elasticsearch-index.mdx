@@ -1,0 +1,76 @@
+---
+title: Index trong Elasticsearch - Aliases
+date: '25-03-2023'
+tags: [elasticsearch]
+---
+Index trong Elasticsearch gồm có 3 thành phần chính là: **aliases, mappings, settings**.
+Ở bài này sẽ tìm hiểu về **aliases** của Index.
+## Giới thiệu
+
+>An alias is a secondary name for a group of data streams or indices. Most Elasticsearch APIs accept an alias in place of a data stream or index name.<br></br>You can change the data streams or indices of an alias at any time. If you use aliases in your application’s Elasticsearch requests, you can reindex data with no downtime or changes to your app’s code.
+
+
+Alias là một **bí danh**(google transalate <span className="ec ec-grimacing"></span>
+) cho các Index, khi dùng API Elasticsearch thay vì thao tác với chính tên Index thì sẽ thao tác với Alias.
+
+Ví dụ: Index có tên event_v1 và alias là event.
+Lúc này khi gọi API Elasticsearch thay vì thao tác event_v1 thì user có thể thao tác với event.
+Và khi cần update đổi qua Index event_v2 thì chỉ cần admin đổi setting alias sang event_v2 còn user vẫn thao tác với alias event mà không cần thay đổi gì.
+
+## Thực hành
+
+Đầu tiên tạo một index event_v1 bằng API sau:
+
+```json
+PUT /event_v1
+```
+
+Sau đó thêm môt số documents vào Index:
+
+```json
+POST /event_v1/_bulk
+{ "index":{ "_id":1} }
+{ "content":"Message 1" }
+{ "index":{ "_id":2} }
+{ "content":"Message 2" }
+{ "index":{ "_id":3} }
+{ "content":"Message 3" }
+{ "index":{ "_id":4} }
+{ "content":"Message 4" }
+{ "index":{ "_id":5} }
+{ "content":"Message 5" }
+```
+
+Thử lấy toàn bộ documents của Index event_v1 theo tên index:
+
+```json
+GET /event_v1/_search
+```
+![](/metadata/es_001.png)
+
+Thêm alias event cho Index event_1:
+
+```json
+POST /_aliases
+{
+  "actions": [
+    {
+      "add": {
+        "index": "event_v1",
+        "alias": "event"
+      }
+    }
+  ]
+}
+```
+![](/metadata/es_002.png)
+
+Bây giờ thử lấy documents theo alias vừa tạo:
+
+```json
+GET /event/_search
+```
+![](/metadata/es_003.png)
+
+## Ref
+ - [https://www.elastic.co/guide/en/elasticsearch/reference/current/aliases.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/aliases.html)

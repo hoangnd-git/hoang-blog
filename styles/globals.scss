@@ -171,6 +171,10 @@ a {
         text-decoration: underline;
       }
     }
+
+    li {
+      margin-bottom: 12px;
+    }
   }
 
   .tags {
@@ -222,11 +226,13 @@ a {
 
   .blog-container {
     padding: 0 12px !important;
+    padding-bottom: 56px;
   }
 }
 
 @media only screen and (max-width: 1350px) {
   .blog-container {
     padding: 0 100px;
+    padding-bottom: 56px;
   }
 }

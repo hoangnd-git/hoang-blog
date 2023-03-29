@@ -1,6 +1,6 @@
 ---
 title: Elasticsearch cơ bản
-date: '29-03-2023'
+date: '24-03-2023'
 tags: [elasticsearch]
 ---
 Elasticsearch là một search engine tuyệt vời, hỗ trợ tìm kiếm nhanh chóng trong lượng dữ liệu lớn và lần gần nhất mình sử dụng Elasticsearch cho dự án của công ty là 3 năm về trước.
@@ -20,7 +20,7 @@ Như các database khác thì những điểm cần biết về Elasticsearch nh
 
 Elasticsearch lưu trữ dữ liệu trong các **index** tương ứng với collection ở MongoDB và table ở SQL.
 Trong index sẽ có các document dưới dạng JSON format, khá giống với MongoDB.
-Sau khi lưu trữ data, Elasticsearch sẽ tiến hành đánh index cho data để hỗ trợ fulltext search nhanh chóng, quá trình này được mô tả là ```near real-time--within 1 second```. Elasticsearch sử dụng cấu trúc dữ liệu kiểu ```inverted index``` giúp tìm kiếm nhanh hơn. 
+Sau khi lưu trữ data, Elasticsearch sẽ tiến hành đánh index cho data để hỗ trợ fulltext search nhanh chóng, quá trình này được mô tả là **near real-time--within 1 second**. Elasticsearch sử dụng cấu trúc dữ liệu kiểu **inverted index** giúp tìm kiếm nhanh hơn. 
 Ví dụ khi thêm 2 document này vào Elasticsearch:
 
 |id|document		
@@ -50,3 +50,6 @@ Elasticsearch cung cấp các API cho phép thao tác với dữ liệu. Một s
 Có khá nhiều API nên mình sẽ tổng hợp lại ở một bài khác.
 
 Trên đây là một số khái niệm cơ bản của Elasticsearch, các bài sau mình sẽ phân tích chi tiết từng phần của Elasticsearch hơn.
+
+## Ref
+ - [https://www.elastic.co/guide/en/elasticsearch/reference/current/documents-indices.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/documents-indices.html)
