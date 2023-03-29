@@ -1,0 +1,49 @@
+---
+title: Index trong Elasticsearch - Mapping
+date: '26-03-2023'
+tags: [elasticsearch]
+---
+Index trong Elasticsearch gồm có 3 thành phần chính là: [aliases](/posts/elasticsearch-index-alias), [mappings](/posts/elasticsearch-index-mapping), settings.
+Ở bài này sẽ tìm hiểu về ***aliases*** của Index.
+
+## Giới thiệu
+>Mapping is the process of defining how a document, and the fields it contains, are stored and indexed.
+
+Mapping trong Index chứa các thông tin define kiểu dữ liệu các field trong document, các thao tác với các field của document khi được lưu trữ.
+
+Mapping có 3 phần chính:
+ - [Explicit mapping](#menu-1)
+ - [Dynamic mapping](#menu-2)
+ - Runtime fields
+<div id="menu-1"></div>
+## Explicit mapping
+Explicit mapping cho phép define cụ thể kiểu của từng field.
+```json
+PUT /admin
+{
+  "mappings": {
+    "properties": {
+      "age":    { "type": "integer" },  
+      "email":  { "type": "keyword"  }, 
+      "name":   { "type": "text"  }     
+    }
+  }
+}
+```
+API trên định nghĩa Index admin có 3 field với kiểu dữ liệu lần lượt là: age-integer, email-keyword, name-text.
+Các type của field mà Elasticsearch hỗ trợ có thể xem [ở đây](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html).
+<div id="menu-2"></div>
+## Dynamic mapping
+
+Khi tạo Index không nhất thiết phải define type của các field luôn. Elasticsearch sẽ tự define type các field theo type mapping sau:
+
+![](/metadata/es_004.png)
+
+Có thể tạo các **Dynamic templates** để tạo các custom mapping khác ngoài các mapping default mà Elasticsearch cung cấp.
+
+
+
+## Ref
+ - [https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)
+ - [https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html)
+ - [https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-templates.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-templates.html)
