@@ -11,6 +11,8 @@ import Head from 'next/head';
 import remarkGfm from 'remark-gfm';
 import stringWidth from 'string-width';
 
+import { atomOneDarkReasonable } from 'react-syntax-highlighter/dist/cjs/styles/hljs';
+
 const components = { Button, SyntaxHighlighter };
 
 export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
@@ -19,9 +21,9 @@ export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
       <div>
         <Head>
           <title>{`${title} | Hoang's Blog`}</title>
-          <meta name="description" content="Welcome to my blog" />
-          <meta property="og:title" content="Hoang's Blog" />
-          <meta property="og:description" content="Welcome to my blog" />
+          <meta name="description" content={title} />
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={title} />
           <link rel="icon" href="/favicon.svg" />
         </Head>
       </div>
@@ -38,6 +40,7 @@ export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
                 const match = /language-(\w+)/.exec(className || '');
                 return !inline && match ? (
                   <SyntaxHighlighter
+                    style={atomOneDarkReasonable}
                     children={String(children).replace(/\n$/, '')}
                     language={match[1]}
                     PreTag="div"
