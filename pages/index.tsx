@@ -26,7 +26,7 @@ export default function Home({ posts }: any) {
 export async function getStaticProps() {
   const files = fs.readdirSync(path.join('posts'));
 
-  const posts = files.map((filename) => {
+  let posts = files.map((filename) => {
     const markdownWithMeta = fs.readFileSync(
       path.join('posts', filename),
       'utf-8'
@@ -47,6 +47,11 @@ export async function getStaticProps() {
       tags,
       slug: filename.split('.')[0],
     };
+  });
+
+  posts = posts.sort((a, b) => {
+    if (a.frontMatter.date > b.frontMatter.date) return -1;
+    else return 1;
   });
 
   return {

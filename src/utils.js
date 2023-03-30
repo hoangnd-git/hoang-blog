@@ -14,7 +14,11 @@ export function getTags() {
 }
 
 export function getPostsByTag(tag) {
-  const posts = _getPosts(tag);
+  let posts = _getPosts(tag);
+  posts = posts.sort((a, b) => {
+    if (a.frontMatter.date > b.frontMatter.date) return -1;
+    else return 1;
+  });
   return posts;
 }
 
