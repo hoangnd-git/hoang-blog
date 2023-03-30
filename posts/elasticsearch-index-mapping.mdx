@@ -1,6 +1,6 @@
 ---
 title: Index trong Elasticsearch - Mapping
-date: '26-03-2023'
+date: '24-03-2023'
 tags: [elasticsearch]
 ---
 Index trong Elasticsearch gồm có 3 thành phần chính là: [aliases](/posts/elasticsearch-index-alias), [mappings](/posts/elasticsearch-index-mapping), settings.
@@ -12,11 +12,83 @@ Index trong Elasticsearch gồm có 3 thành phần chính là: [aliases](/posts
 Mapping trong Index chứa các thông tin define kiểu dữ liệu các field trong document, các thao tác với các field của document khi được lưu trữ.
 
 Mapping có 3 phần chính:
- - [Explicit mapping](#menu-1)
- - [Dynamic mapping](#menu-2)
- - Runtime fields
+ - [Runtime fields](#menu-1)
+ - [Explicit mapping](#menu-2)
+ - [Dynamic mapping](#menu-3)
+
 <div id="menu-1"></div>
+## Runtime fields
+
+>A runtime field is a field that is evaluated at query time
+
+Runtime field là một field được thực thi trong khi query. Runtime field cho phép:
+ - Thêm field vào documents mà không phải reindexing lại data(cũng có thể index runtime field nếu muốn).
+ Ví dụ: document có một field createdAt có kiểu là timestamp, khi query có thể trả thêm một field có giá trị là ngày của field createdAt.
+ - Ghi đè giá trị của field trong khi query. Ví dụ: khi tạo một runtime field trùng tên với một field của document thì runtime field này sẽ chỉ lấy giá trị của field gốc và tinh toán chứ không thay đổi giá trị của field gốc.
+
+Thực hành thử, đầu tiên tạo 1 một runtime field **day_of_week** lấy giá trị ngày từ field **createdAt** của document.
+
+```json
+PUT event/
+{
+  "mappings": {
+    "runtime": {
+      "day_of_week": {
+        "type": "keyword",
+        "script": {
+          "source": "emit(doc['createdAt'].value.dayOfWeekEnum.getDisplayName(TextStyle.FULL, Locale.ROOT))"
+        }
+      }
+    },
+    "properties": {
+      "createdAt": {"type": "date"}
+    }
+  }
+}
+```
+Thêm 1 document vào index
+```json
+POST event/_bulk
+{"create": {}}
+{"createdAt": 1680145918}
+```
+
+Get thử document của index
+```json
+GET event/_search
+```
+![](/metadata/es_005.png)
+
+Document trả về chỉ có field **createdAt**. Muốn lấy thêm giá trị của runtime field **day_of_week** cần define trong field trong query.
+```json
+GET event/_search
+{
+  "fields": [
+    "day_of_week"
+  ]
+}
+```
+![](/metadata/es_006.png)
+
+Thử search query với runtime field.
+```json
+GET event/_search
+{
+  "query": {
+    "match": {
+      "day_of_week": "Tuesday"
+    }
+  }, 
+  "fields": [
+    "day_of_week"
+  ]
+}
+```
+![](/metadata/es_007.png)
+
+<div id="menu-2"></div>
 ## Explicit mapping
+
 Explicit mapping cho phép define cụ thể kiểu của từng field.
 ```json
 PUT /admin
@@ -32,7 +104,8 @@ PUT /admin
 ```
 API trên định nghĩa Index admin có 3 field với kiểu dữ liệu lần lượt là: age-integer, email-keyword, name-text.
 Các type của field mà Elasticsearch hỗ trợ có thể xem [ở đây](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-types.html).
-<div id="menu-2"></div>
+
+<div id="menu-3"></div>
 ## Dynamic mapping
 
 Khi tạo Index không nhất thiết phải define type của các field luôn. Elasticsearch sẽ tự define type các field theo type mapping sau:
@@ -41,9 +114,42 @@ Khi tạo Index không nhất thiết phải define type của các field luôn.
 
 Có thể tạo các **Dynamic templates** để tạo các custom mapping khác ngoài các mapping default mà Elasticsearch cung cấp.
 
+Thực hành thử: tạo một dynamic template map type long sang type date.
 
+Đầu tiên thử thêm document khi chưa thêm dynamic template:
+```json
+POST event/_bulk
+{"create": {}}
+{"createdAt": 1680151187}
+```
+Get mapping của index, field createdAt đang có type là long:
+```json
+GET event/_mapping
+```
+![](/metadata/es_008.png)
+
+Bây giờ dùng API sau để thêm dynamic template, lúc này các field đầu vào là long sẽ được map sang date
+```json
+PUT event
+{
+  "mappings": {
+    "dynamic_templates": [
+      {
+        "long_as_date": {
+          "match_mapping_type": "long",
+          "mapping": {
+            "type": "date"
+          }
+        }
+      }
+    ]
+  }
+}
+```
+![](/metadata/es_009.png)
 
 ## Ref
  - [https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping.html)
  - [https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-field-mapping.html)
  - [https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-templates.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/dynamic-templates.html)
+ - [https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime.html](https://www.elastic.co/guide/en/elasticsearch/reference/current/runtime.html)
