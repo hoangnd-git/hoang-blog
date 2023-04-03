@@ -1,0 +1,70 @@
+---
+title: Monitor log pm2 bằng ELK stack
+date: '25-03-2023'
+tags: [elasticsearch]
+---
+
+Hôm nay mình sẽ thử dùng ELK stack để monitor log hệ thống được deploy bằng pm2.
+
+![](/metadata/elk_001.jpeg)
+
+Đầu tiên ELK stack gồm có các thành phần như sau:
+
+- Elasticsearch: Lưu log.
+- Logstash: Nhận log từ filebeat, parse log rồi đẩy qua Elasticsearch lưu trữ.
+- Filebeat: Đọc log từ file log pm2, đẩy qua Logstash, có thể đẩy trược tiếp log từ Filebeat qua Elasticsearch nhưng sẽ không có filter như ở Logstash.
+- Kibana: Giao diện để monitor log.
+
+Sau khi đã cài các phần của ELK stack, cần config các bước như sau(bỏ qua các config security <span className="ec ec-joy"></span>):
+
+**Bước 1: Config Filebeat nhận file log của pm2 và đẩy qua logstash:**
+
+Sửa config Filebeat ở file: `/etc/filebeat/filebeat.yml`
+
+```yaml
+- type: filestream
+  id: pm2-log
+  enabled: true
+  paths:
+    - ~/.pm2/logs/[pm2_id].log
+output.logstash:
+  hosts: ["localhost:5044"]
+```
+
+Filebeat sẽ đọc file log theo path `~/.pm2/logs/[pm2_id].log` sau đó sẽ đẩy log qua logstash ở port 5044
+
+**Bước 2: Config Logstash nhận log filebeat và lưu log vào elasticsearch**
+
+Tạo một file config bất kỳ(```first-pipeline.conf```) ở folder Logstash
+
+```yaml
+input {
+    beats {
+        port => "5044"
+    }
+}
+# filter {
+#
+# }
+output {
+    elasticsearch {
+        hosts => [ "localhost:9200" ]
+    }
+}
+```
+
+Logstash sẽ nhận log từ filebeat ở port 5044 và lưu log xuống elasticsearch. Có thể config `filter` để parse log nếu cần.
+Logstash hỗ trợ các filter plugin [sau](https://www.elastic.co/guide/en/logstash/current/filter-plugins.html).
+
+**Bước 3: Tạo index pattern kibana**
+
+Logstash sẽ tạo một index ở Elasticsearch và có Alias là **logstash**.
+
+Vào **Stack Management** trong Kibana web tạo index pattern với alias **logstash**.
+
+![](/metadata/elk_002.png)
+
+Sau đó vào **Analytics > Discover** chọn filter **logstash**. Toàn bộ log pm2 sẽ được hiển thị ở đây,
+có thể dùng KQL để filter log.
+
+![](/metadata/elk_003.png)
