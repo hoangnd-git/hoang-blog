@@ -11,9 +11,10 @@ export default function App({ Component, pageProps }: AppProps) {
       <div>
         <Head>
           <title>Hoang&apos;s Blog</title>
-          <meta name="description" content="Welcome to my blog" />
+          <meta name="description" content="Một chiếc blog nho nhỏ" />
           <meta property="og:title" content="Hoang's Blog" />
-          <meta property="og:description" content="Welcome to my blog" />
+          <meta property="og:description" content="Một chiếc blog nho nhỏ" />
+          <meta name="google-site-verification" content="2sv7utYTeZ0DN0LfK10EIjz-paQ_f4mP84RWLmQqjs0" />
           <link rel="icon" href="/favicon.png" />
         </Head>
       </div>
