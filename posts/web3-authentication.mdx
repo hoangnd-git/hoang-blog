@@ -1,0 +1,42 @@
+---
+title: Xác thực bằng web3
+date: '27-03-2023'
+tags: [web3, authentication]
+---
+
+Bài viết này mình sẽ chia sẻ flow xác thực bằng web3 mà mình đã áp dụng vào các dự án gần đây.
+
+![](/metadata/web3_auth_001.jpg)
+
+Đầu tiên với web2 thì flow xác thực thường sẽ như này:
+
+![](/metadata/web2-auth.png)
+
+Người dùng cần phải dùng `username, password` đã đăng ký với hệ thống để xác thực.
+Thông tin người dùng sẽ được lưu trữ tập trung ở hệ thống. Còn ở web3 người dùng sẽ không cần đăng ký `username, password`
+mà sẽ dùng ví của mình để tạo chữ ký và hệ thống sẽ xác minh chữ ký này. Flow xác thực ở web3 sẽ như sau:
+
+![](/metadata/web3-auth.png)
+
+Ở phía client tạo chữ ký bằng cách sử dụng hàm sau của web3 libary:
+
+```javascript
+const signature = web3.eth.accounts.sign(signData, privateKey);
+```
+
+`signData` mình thường để format như sau: `wallet_address@current_timestamp`.
+`wall_address` để xác minh địa chỉ ví của chữ ký, `current_timestamp` để kiểm tra thời gian hết hạn của chữ ký.
+
+Ở phía server sẽ sử dụng hàm `recover` của web3 libary để xác minh chữ ký:
+
+```javascript
+const walletAddress = web3.eth.accounts.recover(signData, signature);
+```
+
+Hàm `recover` sẽ trả về một địa chỉ ví từ signData và signature truyền vào,
+nếu địa chỉ ví này khớp với địa chỉ trong signData thì có thể xác nhận là đúng chủ nhân của ví này thao tác.
+Ngoài ra có thể kiểm tra thêm thông số `current_timestamp` trong signData để có thể giới hạn chữ ký này có giá trị trong bao lâu,
+giúp bảo mật tốt hơn trong trường hợp chữ ký này bị người khác biết. Code mẫu mọi người có thể tham khảo tại [đây](https://github.com/hoangnd-git/web3-auth).
+
+Như vậy với web3, người dùng sẽ không cần đăng ký ```username, password``` để xác thực. Sau khi xác thực bằng chữ ký,
+hệ thống có thể trả về JWT token cho client như ở bên web2 để phục vụ cho các thao tác phân quyền về sau của API.

@@ -52,6 +52,13 @@ export default function PostPage({ frontMatter: { title, tags }, mdxSource }) {
                   </code>
                 );
               },
+              img({ ...props }) {
+                return (
+                  <span className="img-container">
+                    <img {...props}></img>
+                  </span>
+                );
+              },
             }}
           />
         </div>
