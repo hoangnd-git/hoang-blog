@@ -103,6 +103,12 @@
   border-radius: 6px;
 }
 
+.markdown-body .img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .markdown-body {
   -ms-text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
