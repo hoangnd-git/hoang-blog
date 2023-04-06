@@ -72,3 +72,10 @@ các message. Queue của RabbitMQ hoạt động theo cơ chế FIFO.
     Khi ```unacknowledged messages``` của consumer đạt ngưỡng, RabbitMQ sẽ đẩy message sang
     consumer khác nếu có, còn không thì vẫn giữ lại ở queue. Điều này sẽ giúp cho consumer không bị quá tải nhưng đôi khi
     sẽ làm queue bị đầy.
+
+6. **Round-robin dispatching**:
+
+    Khi có nhiều consumer lắng nghe từ cùng 1 queue, RabbitMQ sẽ phân phối message
+    lần lượt cho từng consumer. Ví dụ: một queue gồm 4 message là: 1, 2, 3, 4.
+    Có 2 consumer A, B lắng nghe queue thì consumer A nhận được 2 message là: 1 và 3 còn lại
+    consumer B nhận được 2 message là: 2 và 4.
