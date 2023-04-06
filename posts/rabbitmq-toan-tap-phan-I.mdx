@@ -79,3 +79,13 @@ các message. Queue của RabbitMQ hoạt động theo cơ chế FIFO.
     lần lượt cho từng consumer. Ví dụ: một queue gồm 4 message là: 1, 2, 3, 4.
     Có 2 consumer A, B lắng nghe queue thì consumer A nhận được 2 message là: 1 và 3 còn lại
     consumer B nhận được 2 message là: 2 và 4.
+
+7. **Consumer mode**:
+    
+    Consumer trong RabbitMQ có 2 mode là: pull và push. Trong quá trình xử lý pull message,
+    consumer có thể push message sang một queue khác. Ví dụ cụ thể tại [đây](https://www.rabbitmq.com/tutorials/tutorial-six-javascript.html).
+    Điều này giúp RabbitMQ có thể sử dụng trong service integration.
+
+## Ref
+ - [https://www.rabbitmq.com/getstarted.html](https://www.rabbitmq.com/getstarted.html)
+ - [https://www.rabbitmq.com/documentation.html](https://www.rabbitmq.com/documentation.html)
