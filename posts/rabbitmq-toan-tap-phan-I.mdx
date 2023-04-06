@@ -1,0 +1,74 @@
+---
+title: RabbitMQ toàn tập (Phần I)
+date: '29-03-2023'
+tags: [rabbitmq, message broker]
+---
+
+Title nghe nguy hiểm thế thôi chứ đây chỉ là tổng hợp những điều cần biết để
+có thể làm việc với RabbitMQ, còn toàn tập ở [đây](https://www.rabbitmq.com/documentation.html)
+là đủ nhất <span className="ec ec-zany"></span>. Mình sẽ chia thành 2 phần: [phần I](/posts/rabbitmq-toan-tap-phan-I) sẽ tổng hợp các
+khái niệm để hiểu và thao tác với RabbitMQ, phần II sẽ thực hành deploy RabbitMQ.
+
+## RabbitMQ là gì
+
+> With tens of thousands of users, RabbitMQ is one of the most popular open source message brokers.
+
+RabbitMQ là một trong những message broker phổ biến nhất hiện nay. Giống như Kafka hay Redis thì RabbitMQ 
+cũng hỗ trợ model pub/sub, trong đó publisher sẽ push các message và subscriber sẽ lắng nghe
+các message. Queue của RabbitMQ hoạt động theo cơ chế FIFO.
+
+## Một số điểm cần lưu ý ở RabbitMQ
+
+1. **Hỗ trợ 2 kiểu "persistent và transient" data**:
+
+    **persistent** có nghĩa là khi RabbitMQ bị shutdown do lỗi hay một vấn đề gì dó,
+    khi khởi động lại các dữ liệu cũ vẫn được giữ nguyên và tiếp tục hoạt động, 
+    còn với **transient**, dữ liệu sẽ bị xóa khi RabbitMQ mất kết nối.
+
+    ```javascript
+    // Với durable = true, queue này sẽ được giữ khi RabbitMQ restart.
+    channel.assertQueue(queue, {
+      durable: true,
+    });
+    // Với persistent = true, message này sẽ được giữ khi RabbitMQ restart.
+    channel.sendToQueue(queue, Buffer.from(msg), {
+      persistent: true,
+    });
+    ```
+
+2. **Replication**:
+
+    Để tăng tính ```high availability```, RabbitMQ cho phép tạo thêm các node,
+    trong đó có 1 node chính là Master và các node còn lại là Slave. Lưu ý: ```client có thể kết nối đến bất kỳ node nào, nhưng các hoạt động publish và consume
+    sẽ được chuyển đến node Master để thực hiện sau đó các message sẽ được replica đến
+    các node Slave.```
+
+    => Để tăng performance của RabbitMQ chỉ có thể **scale vertically** tại node Master
+    mà không thể sử dụng **scale horizontally** được.
+
+3. **Exchanges**:
+
+    Publisher không push trực tiếp message vào queue mà thông qua một built-in component
+    gọi là exchange. Các queue sẽ được link với exchange, message đẩy vào exchange sẽ được đẩy sang 
+    các queue tương ứng. Exchange có 4 type là: ```direct, topic, headers, fanout```, chi tiết
+    xem tại [đây](https://www.rabbitmq.com/tutorials/amqp-concepts.html)
+
+4. **Message acknowledgment**: 
+
+    Khi consumer nhận được message, có thể đánh dấu là đã nhận được message và
+    ```message này sẽ bị xóa hoàn toàn khỏi queue sau khi đã được acknowledgment```, đây là một trong những điểm
+    khác biệt so với **Kafka**. Có 2 mode của consumer acknowledgments: ```auto và manual```.
+
+    Với **auto**: khi consumer nhận được message, RabbitMQ sẽ công nhận và xóa message khỏi queue
+    luôn kể cả khi consumer thực hiện logic code tiếp theo mà có xảy ra lỗi gì đi nữa.
+
+    Với **manual**: client có thể đánh dấu đã nhận được message thủ công sau khi đã được hiện logic.
+    Điều này có thể đảm bảo trong quá trình thực hiện logic gặp lỗi thì message sẽ
+    không bị mất và vẫn được gửi lại cho consumer để thực hiện.
+
+5. **Consumer Prefetch**:
+
+    RabbitMQ cho phép giới hạn số lượng messages chưa được công nhận(```unacknowledged messages```) ở consumer.
+    Khi ```unacknowledged messages``` của consumer đạt ngưỡng, RabbitMQ sẽ đẩy message sang
+    consumer khác nếu có, còn không thì vẫn giữ lại ở queue. Điều này sẽ giúp cho consumer không bị quá tải nhưng đôi khi
+    sẽ làm queue bị đầy.
