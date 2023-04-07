@@ -43,7 +43,7 @@ các message. Queue của RabbitMQ hoạt động theo cơ chế FIFO.
     sẽ được chuyển đến node Master để thực hiện sau đó các message sẽ được replica đến
     các node Slave.```
 
-    => Để tăng performance của RabbitMQ chỉ có thể **scale vertically** tại node Master
+    Queue của RabbitMQ không thể chia nhỏ thành nhiều phần, do vậy để tăng performance của RabbitMQ chỉ có thể **scale vertically** tại node Master
     mà không thể sử dụng **scale horizontally** được.
 
 3. **Exchanges**:
