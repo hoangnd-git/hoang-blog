@@ -16,7 +16,7 @@ export function getTags() {
 export function getPostsByTag(tag) {
   let posts = _getPosts(tag);
   posts = posts.sort((a, b) => {
-    if (a.frontMatter.date > b.frontMatter.date) return -1;
+    if (convertDate(a.frontMatter.date) > convertDate(b.frontMatter.date)) return -1;
     else return 1;
   });
   return posts;
@@ -46,4 +46,9 @@ function _getPosts(tag = null) {
     }
   });
   return posts;
+}
+
+export function convertDate(date) {
+  const [day, month, year] = date.split('-');
+  return new Date(`${year}-${month}-${day}`);
 }

@@ -1,0 +1,73 @@
+---
+title: 'Kafka tổng hợp (Phần I): Tổng quan Kafka architecture'
+date: '01-04-2023'
+tags: [kafka, message broker]
+---
+
+Loạt bài này mình sẽ nói về Kafka và chưa rõ nó sẽ gồm bao nhiêu phần cả <span className="ec ec-upside-down-face"></span>.
+Ở bài này mình sẽ tổng hợp một số điều cần lưu ý ở Kafka architecture, đủ để có thể sử dụng được Kafka.
+Các phần sau sẽ đi sâu hơn nữa và thực hành một số kỹ thuật ở Kafka.
+
+## Kafka là gì
+
+> Apache Kafka is a publish/subscribe messaging system designed to solve this problem. It is often described as a “distributed commit log” or more recently as a “distributing streaming platform.”
+
+Kafka là một nền tảng phân phối message(log) phân tán, phát triển theo model
+pub/sub. Producer được dùng để đẩy data vào Kafka, còn consumer được dùng để đọc
+data từ Kafka.
+
+## Topic, Partition trong Kafka
+
+![](/metadata/kafka_001.png)
+
+Kiểu dữ liệu trong Kafka được gọi chung là message. Các message này được lưu trữ tuần tự trong
+các **topic**. Mỗi message sẽ được đánh số thự tự gọi là offset. Có thể phân chia lưu trữ
+message trong **topic** ở nhiều **partition**, điều này cho phép **scale horizontally topic** ở Kafka dễ dàng
+giúp tăng tốc độ xử lý của hệ thống.
+
+Khi chia topic thành nhiều partition thì thứ tự message chỉ được đảm bảo ở từng
+partition. Cho nên với các hệ thống cần xử lý đúng tuần tự message ở một topic
+thì không nên chia thành nhiều partition.
+
+Message ở Kafka sẽ được lưu trữ ở file và sẽ không bị xóa, nên khi Kafka bị khởi động
+lại thì message vẫn sẽ được giữ nguyên.
+
+## Producers
+
+Producers được dùng để đẩy message vào Kafka. Có 3 phương thức để đẩy message:
+
+- **Fire-and-forget**: Với phương thức này khi gửi message, producer sẽ không quan tâm là đã gửi thành công hay chưa
+  và producer sẽ cố gắng gửi lại message tự động. Tuy nhiên sẽ không kiểm soát được
+  việc message thỉnh thoảng bị mât không được lưu trữ vào Kafka.
+- **Synchronous send**: Với phương thức này khi gửi message, producer sẽ đợi phản hồi từ Kafka
+  xem message này đã được ghi hay chưa. Bởi vì phải đợi phản hồi từ Kafka nên với cách
+  này tốc độ ghi message sẽ bị giảm.
+- **Asynchronous send**: Với phương thức này khí gửi message, producer sẽ để lại một
+  callback cho Kafka, sau khi thực hiện lưu message Kafka sẽ phản hồi vào hàm callback này.
+  Producer sẽ không cần đợi phản hồi từ Kafka mà sẽ tiếp tục ghi tiếp giúp đảm bảo
+  tốc độ ghi được nhanh chóng mà vẫn kiếm soát được việc mất message.
+
+Khi deploy Kafka có nhiều bản replicas cần lưu ý thêm tham số **acks**:
+
+- **acks=0**: Producer sẽ không đợi phản hồi từ Kafka xem message đã được ghi thành
+  công hay chưa.
+- **acks=1**: Producer sẽ đợi phản hồi từ Kafka xem message đã được ghi thành công
+  ở **lead replica** hay chưa, nếu chưa thì producer sẽ gửi lại message tránh việc
+  mất message.
+- **acks=all**: Producer sẽ đợi phản hồi từ Kafka xem message đã được ghi thành công
+  ở toàn bộ các replica hay chưa. Điều này sẽ giúp đảm bảo việc kiểm soát được message
+  nhưng sẽ làm chậm tốc độ ghi của producer.
+
+Với topic được chia thành nhiều partition, mặc định producer sẽ ghi message lần lượt chia đều
+vào các partition theo cơ chế round-robin. Cũng có thể chỉ định message sẽ được ghi vào
+partition cụ thể.
+
+## Consumer và consumer group
+
+Consumer được dùng để lấy message từ Kafka, một consumer có thể lấy message từ nhiều
+topic. Có thể nhóm các consumer thành một group để tăng tốc độ đọc message từ các 
+partition của topic.
+
+## Ref:
+
+- Neha Narkhede, Gwen Shapira & Todd Palino. _Kafka: The definitive guide_

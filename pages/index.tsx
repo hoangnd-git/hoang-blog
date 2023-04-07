@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import Link from 'next/link';
+import { convertDate } from '../src/utils';
 
 export default function Home({ posts }: any) {
   return (
@@ -50,7 +51,8 @@ export async function getStaticProps() {
   });
 
   posts = posts.sort((a, b) => {
-    if (a.frontMatter.date > b.frontMatter.date) return -1;
+    if (convertDate(a.frontMatter.date) > convertDate(b.frontMatter.date))
+      return -1;
     else return 1;
   });
 
