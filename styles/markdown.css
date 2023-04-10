@@ -14,7 +14,7 @@
   margin: 0;
   font-size: 85%;
   white-space: break-spaces;
-  background-color: var(--color-neutral-muted);
+  background-color: rgba(175,184,193,0.2);
   border-radius: 6px;
 }
 
