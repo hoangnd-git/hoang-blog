@@ -11,7 +11,7 @@ export default function Home({ posts }: any) {
         <div className="blog mb-3" key={index}>
           <div className="blog-content">
             <div className="content-text">
-              <span className="content-date">{post.frontMatter.date}</span>
+              {/* <span className="content-date">{post.frontMatter.date}</span> */}
               {post.tags}
             </div>
             <Link href={'/posts/' + post.slug} passHref>
