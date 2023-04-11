@@ -114,8 +114,6 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: auto;
-  height: calc(100vh - 72px);
   padding: 48px 0;
 
   .blog {
@@ -231,8 +229,9 @@ a {
   }
 
   .blog-container {
-    padding: 0 12px !important;
-    padding-bottom: 56px;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+    padding-bottom: 56px !important;
   }
 }
 
