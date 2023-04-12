@@ -17,10 +17,10 @@ export default function Home({ posts }: any) {
         <meta property="og:description" content="Một chiếc blog nho nhỏ" />
         <meta name="keywords" content="nguyenhoang, blog, it"></meta>
         <meta name="author" content="Hoang Nguyen"></meta>
-        {/* <meta
+        <meta
           name="google-site-verification"
           content="2sv7utYTeZ0DN0LfK10EIjz-paQ_f4mP84RWLmQqjs0"
-        /> */}
+        />
         <link rel="icon" href="/favicon.png" />
       </Head>
       {process.env.NEXT_PUBLIC_G_ID ? (
